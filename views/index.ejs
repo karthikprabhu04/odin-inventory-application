@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>This is index</h1>
+    <!-- For loop to put categories here -->
+    <ul>
+      <% categoriesArray.forEach(category => { %>
+      <li>
+        <a href="/<%=category%>" ><%= category %></a>
+      </li>
+      <% }) %>
+    </ul>
+  </body>
+</html>

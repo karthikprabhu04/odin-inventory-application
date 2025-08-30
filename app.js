@@ -3,6 +3,7 @@ const app = express();
 const path = require("node:path");
 const usersRouter = require("./routes/usersRouter");
 require("dotenv").config();
+require("./db/populatedb.js");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

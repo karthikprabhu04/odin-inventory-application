@@ -7,14 +7,27 @@
   </head>
   <body>
     <h1>This is items</h1>
+    
     <!-- For loop to put items here -->
     <ul>
       <% itemsList.forEach(itemsObject => { %>
       <li>
         <a><%= itemsObject.item %></a>
+
+        <form  method="POST">
+          <input type="text" name="newItemName" value="<%=itemsObject.item%>">
+          <button type="submit" formaction="/<%=categoryID%>/update/<%=itemsObject.id%>">Update</button>
+          <button type="submit" formaction="/<%=categoryID%>/delete/<%=itemsObject.id%>">Delete</button>
+        </form>
       </li>
       <% }) %>
     </ul>
+
     <!-- Create item form -->
+    <form action="/<%=categoryID%>/createItem" method="POST">
+      <label for="item">Create category:</label>
+      <input type="text" name="item" id="item">
+      <button type="submit">Create Item</button>
+    </form>
   </body>
 </html>

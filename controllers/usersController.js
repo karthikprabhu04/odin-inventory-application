@@ -10,27 +10,53 @@ exports.homePage = async (req, res) => {
 // List of items in a category
 exports.Items = async (req, res) => {
   // console.log("controller")
-  const itemsList = await db.getItems(req.params.categoryID)
-  res.render("items", { itemsList })
+  const categoryID = req.params.categoryID;
+  const itemsList = await db.getItems(categoryID);
+  console.log(categoryID);
+  console.log(itemsList);
+  res.render("items", { itemsList, categoryID });
 };
 
+// CATEGORY CRUD ACTIONS
 // Creating category
 exports.createCategory = async (req, res) => {
-  console.log("Creating category...")
+  console.log("Creating category...");
   db.createCategory(req.body.category);
-  res.redirect("/")
-}
+  res.redirect("/");
+};
 
 // Updating category
 exports.updateCategory = async (req, res) => {
-  console.log("Updating category...")
-  db.updateCategory(req.params.categoryID, req.body.newName)
-  res.redirect("/")
-}
+  console.log("Updating category...");
+  db.updateCategory(req.params.categoryID, req.body.newName);
+  res.redirect("/");
+};
 
 // Delete category
 exports.deleteCategory = async (req, res) => {
-  console.log("Deleting category...")
-  db.deleteCategory(req.params.categoryID)
-  res.redirect("/")
-}
+  console.log("Deleting category...");
+  db.deleteCategory(req.params.categoryID);
+  res.redirect("/");
+};
+
+// ITEM CRUD ACTIONS
+// Creating item
+exports.createItem = async (req, res) => {
+  console.log("Creating item...");
+  db.createItem(req.body.item, Number(req.params.categoryID));
+  res.redirect(`/${req.params.categoryID}`)
+};
+
+// Updating item
+exports.updateItem = async (req, res) => {
+  console.log("Updating item...");
+  db.updateItem(req.params.itemID, req.body.newItemName);
+  res.redirect(`/${req.params.categoryID}`);
+};
+
+// Delete item
+exports.deleteItem = async (req, res) => {
+  console.log("Deleting item...");
+  db.deleteItem(req.params.itemID);
+  res.redirect(`/${req.params.categoryID}`);
+};

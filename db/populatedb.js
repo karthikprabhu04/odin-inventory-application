@@ -37,7 +37,7 @@ async function main() {
       CREATE TABLE IF NOT EXISTS items (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         item VARCHAR(255) NOT NULL,
-        category_id INTEGER NOT NULL REFERENCES categories(id)
+        category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE
       );
     `);
 

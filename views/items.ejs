@@ -9,9 +9,9 @@
     <h1>This is items</h1>
     <!-- For loop to put items here -->
     <ul>
-      <% itemsArray.forEach(item => { %>
+      <% itemsList.forEach(itemsObject => { %>
       <li>
-        <a><%= item %></a>
+        <a><%= itemsObject.item %></a>
       </li>
       <% }) %>
     </ul>

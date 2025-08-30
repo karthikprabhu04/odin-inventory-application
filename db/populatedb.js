@@ -16,11 +16,13 @@ async function main() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        category VARCHAR(255) NOT NULL UNIQUE
+        category VARCHAR(255) NOT NULL
       );
     `);
 
     // Insert categories
+    let countCategories = await client.query('SELECT COUNT(*) FROM categories');
+    if (parseInt(countCategories.rows[0].count) === 0) {
     await client.query(`
       INSERT INTO categories (category) VALUES
         ('Clothes'),
@@ -28,19 +30,20 @@ async function main() {
         ('Technology'),
         ('Stationary'),
         ('Toiletries')
-      ON CONFLICT (category) DO NOTHING;
-    `);
+    `)};
 
     // Create items table
     await client.query(`
       CREATE TABLE IF NOT EXISTS items (
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        item VARCHAR(255) NOT NULL UNIQUE,
+        item VARCHAR(255) NOT NULL,
         category_id INTEGER NOT NULL REFERENCES categories(id)
       );
     `);
 
     // Insert items
+    let countItems = await client.query('SELECT COUNT(*) FROM items');
+    if (parseInt(countItems.rows[0].count) === 0) {
     await client.query(`
       INSERT INTO items (item, category_id) VALUES
         ('Everyday clothes', 1),
@@ -53,8 +56,7 @@ async function main() {
         ('Paper', 4),
         ('Toothbrush and Toothpaste', 5),
         ('Soap', 5)
-      ON CONFLICT (item) DO NOTHING;
-    `);
+    `)};
 
     await client.query('COMMIT');
     console.log("Seeding completed successfully!");

@@ -9,11 +9,14 @@
     <h1>This is index</h1>
     <!-- For loop to put categories here -->
     <ul>
-      <% categoriesArray.forEach(category => { %>
+      <% categoriesList.forEach(categoryObject => { %>
       <li>
-        <a href="/<%=category%>" ><%= category %></a>
-        <form action="/update/">
+        <a href="/<%=categoryObject.id%>" ><%= categoryObject.category %></a>
 
+        <form  method="POST">
+          <input type="text" name="newName" value="<%=categoryObject.category%>">
+          <button type="submit" formaction="/update/<%=categoryObject.id%>">Update</button>
+          <button type="submit" formaction="/delete/<%=categoryObject.id%>">Delete</button>
         </form>
       </li>
       <% }) %>

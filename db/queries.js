@@ -1,41 +1,47 @@
 const pool = require("./pool");
 
+// Get all categories
 async function getAllCategories() {
-  const { rows } = await pool.query("SELECT id, category FROM categories");
-  console.log(rows)
-  // categoriesIDs = rows.map((row) => row.id)
-  // categoriesArray = rows.map((row) => row.category);
-  
-  return categoriesArray;
+  const { rows } = await pool.query(
+    "SELECT id, category FROM categories ORDER BY id ASC"
+  );
+  console.log(rows);
+  return rows;
 }
 
-async function getItems(category) {
-  // Get category ID
-  const categoryResult = await pool.query(
-    "SELECT id FROM categories WHERE category = $1",
-    [category]
-  );
-  const categoryId = categoryResult.rows[0].id;
-
-  // Get items for that category
-  const itemsResult = await pool.query(
+// Get all items from a category
+async function getItems(categoryID) {
+  const { rows } = await pool.query(
     "SELECT item FROM items WHERE category_id = $1",
-    [categoryId]
+    [categoryID]
   );
-  const itemsArray = itemsResult.rows.map((row) => row.item);
-  return itemsArray;
+  console.log(rows);
+  return rows;
 }
 
+// Create new category
 async function createCategory(category) {
   await pool.query("INSERT INTO categories (category) VALUES ($1)", [category]);
 }
 
-async function updateCategory(category, categoryID) {
-  await pool.query("UPDATE categories SET category = $1 WHERE id = $2", [category, categoryID]);
+// Update category
+async function updateCategory(categoryID, newName) {
+  await pool.query("UPDATE categories SET category = $1 WHERE id = $2", [
+    newName,
+    categoryID,
+  ]);
+}
+
+// Delete category
+async function deleteCategory(categoryID) {
+  await pool.query("DELETE FROM items WHERE category_id = $1", [categoryID]);
+  await pool.query("DELETE FROM categories WHERE id = $1", [categoryID]);
 }
 
 module.exports = {
   getAllCategories,
   getItems,
   createCategory,
+  updateCategory,
+  deleteCategory,
 };

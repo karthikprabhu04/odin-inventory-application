@@ -6,7 +6,7 @@
     <title>Home</title>
   </head>
   <body>
-    <h1>This is index</h1>
+    <h1>University packing list</h1>
     <!-- For loop to put categories here -->
     <ul>
       <% categoriesList.forEach(categoryObject => { %>
@@ -14,7 +14,8 @@
         <a href="/<%=categoryObject.id%>" ><%= categoryObject.category %></a>
 
         <form  method="POST">
-          <input type="text" name="newName" value="<%=categoryObject.category%>">
+          <input type="text" name="newName" value="<%=categoryObject.category%>" required>
+          <input type="password" name="adminPassword" placeholder="Enter Admin Password" required>
           <button type="submit" formaction="/update/<%=categoryObject.id%>">Update</button>
           <button type="submit" formaction="/delete/<%=categoryObject.id%>">Delete</button>
         </form>
@@ -26,7 +27,7 @@
     <!-- Create category form -->
      <form action="/createCategory" method="POST">
         <label for="category">Create category:</label>
-        <input type="text" name="category" id="category">
+        <input type="text" name="category" id="category" required>
         <button type="submit">Create</button>
      </form>
   </body>

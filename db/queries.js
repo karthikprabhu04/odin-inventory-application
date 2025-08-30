@@ -19,6 +19,20 @@ async function getItems(categoryID) {
   return rows;
 }
 
+// Get category from ID
+async function getCategoryFromID(categoryID) {
+  const { rows } = await pool.query(
+    "SELECT category FROM categories WHERE id = $1",
+    [categoryID]
+  );
+
+  if (rows.length === 0) {
+    return null;
+  }
+
+  return rows[0].category;
+}
+
 // CATEGORY CRUD ACTIONS
 // Create new category
 async function createCategory(category) {
@@ -43,7 +57,10 @@ async function deleteCategory(categoryID) {
 // Create new item
 async function createItem(item, categoryID) {
   // console.log(categoryID)
-  await pool.query("INSERT INTO items (item, category_id) VALUES ($1, $2)", [item, categoryID]);
+  await pool.query("INSERT INTO items (item, category_id) VALUES ($1, $2)", [
+    item,
+    categoryID,
+  ]);
 }
 
 // Update item
@@ -59,10 +76,10 @@ async function deleteItem(itemID) {
   await pool.query("DELETE FROM items WHERE id = $1", [itemID]);
 }
 
-
 module.exports = {
   getAllCategories,
   getItems,
+  getCategoryFromID,
   // Categories CRUD
   createCategory,
   updateCategory,

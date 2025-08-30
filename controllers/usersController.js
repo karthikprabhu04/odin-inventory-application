@@ -12,9 +12,10 @@ exports.Items = async (req, res) => {
   // console.log("controller")
   const categoryID = req.params.categoryID;
   const itemsList = await db.getItems(categoryID);
+  const category = await db.getCategoryFromID(categoryID)
   console.log(categoryID);
   console.log(itemsList);
-  res.render("items", { itemsList, categoryID });
+  res.render("items", { itemsList, categoryID, category });
 };
 
 // CATEGORY CRUD ACTIONS
@@ -27,15 +28,23 @@ exports.createCategory = async (req, res) => {
 
 // Updating category
 exports.updateCategory = async (req, res) => {
+  if (req.body.adminPassword !== process.env.ADMIN_PASSWORD) {
+    return res.status(403).send("Invalid admin password")
+  }
+  
   console.log("Updating category...");
-  db.updateCategory(req.params.categoryID, req.body.newName);
+  await db.updateCategory(req.params.categoryID, req.body.newName);
   res.redirect("/");
 };
 
 // Delete category
 exports.deleteCategory = async (req, res) => {
+  if (req.body.adminPassword !== process.env.ADMIN_PASSWORD) {
+    return res.status(403).send("Invalid admin password")
+  }
+  
   console.log("Deleting category...");
-  db.deleteCategory(req.params.categoryID);
+  await db.deleteCategory(req.params.categoryID);
   res.redirect("/");
 };
 
